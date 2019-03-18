@@ -52,8 +52,7 @@
 
         $(document).ready(function () {
 
-
-            var sendASC = function () {
+            var send = function (arg) {
 
                 var ArrayData = $.map($("#array").val().replace(/[,]$/, '').split(','), Number);
 
@@ -61,7 +60,7 @@
 
                 var numbers = {
                     "numbers": ArrayData,
-                    "order": "ASC"
+                    "order": arg
                 };
 
                 $.ajax({
@@ -80,35 +79,12 @@
 
             };
 
-            var sendDESC = function () {
-
-                var ArrayData = $.map($("#array").val().replace(/[,]$/, '').split(','), Number);
-
-                $("#array").val('');
-
-                var numbers = {
-                    "numbers": ArrayData,
-                    "order": "DESC"
-                };
-
-                $.ajax({
-                    type: "POST",
-                    url: "/numbers/sort-command",
-                    data: JSON.stringify(numbers),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (data) {
-                        $("#numbers").text("Sorted numbers: " + JSON.stringify(data.numbers));
-                    },
-                    failure: function (errMsg) {
-                        alert(errMsg);
-                    }
-                });
-
-            };
-
-            $("#sortASC").click(sendASC);
-            $("#sortDESC").click(sendDESC);
+            $("#sortASC").click(function () {
+                send("ASC");
+            });
+            $("#sortDESC").click(function () {
+                send("DESC");
+            });
 
 
         });
