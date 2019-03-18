@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>SpringREST task</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+
+        body {
+            margin: 14px;
+            font-size: 20px;
+            line-height: 18px;
+        }
+
+        #sortASC {
+            margin: auto;
+            font-size: 22px;
+        }
+
+        #sortDESC {
+            margin: auto;
+            font-size: 22px;
+        }
+
+        #array {
+            margin: auto;
+            font-size: 20px;
+        }
+
+
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+<div>
+
+    <p>Enter integer's array:</p>
+
+    <input type="text" name="move" id="array" autocomplete="off" spellcheck="false" autofocus/>
+
+    <p>For example: "0,1,2"</p>
+
+    <input type="submit" id="sortASC" value="Sort - Ascending"/>
+
+    <input type="submit" id="sortDESC" value="Sort - Descending"/>
+
+    <p id="numbers"></p>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            var sendASC = function () {
+
+                var ArrayData = $.map($("#array").val().replace(/[,]$/, '').split(','), Number);
+
+                $("#array").val('');
+
+                var numbers = {
+                    "numbers": ArrayData,
+                    "order": "ASC"
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/numbers/sort-command",
+                    data: JSON.stringify(numbers),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#numbers").text("Sorted numbers: " + JSON.stringify(data.numbers));
+                    },
+                    failure: function (errMsg) {
+                        alert(errMsg);
+                    }
+                });
+
+            };
+
+            var sendDESC = function () {
+
+                var ArrayData = $.map($("#array").val().replace(/[,]$/, '').split(','), Number);
+
+                $("#array").val('');
+
+                var numbers = {
+                    "numbers": ArrayData,
+                    "order": "DESC"
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/numbers/sort-command",
+                    data: JSON.stringify(numbers),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#numbers").text("Sorted numbers: " + JSON.stringify(data.numbers));
+                    },
+                    failure: function (errMsg) {
+                        alert(errMsg);
+                    }
+                });
+
+            };
+
+            $("#sortASC").click(sendASC);
+            $("#sortDESC").click(sendDESC);
+
+
+        });
+
+
+    </script>
+
+</div>
+
+</body>
+</html>
